@@ -3,6 +3,8 @@
 #   performed 90% faster
 #   used less than 22% memory
 # than other solutions
+#
+# Check out Manacher's algorithm for an optimized solution
 
 class Solution:
     def longestPalindrome(self, string: str) -> str:
