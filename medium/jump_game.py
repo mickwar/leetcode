@@ -1,6 +1,10 @@
 # https://leetcode.com/problems/jump-game/
-#
-# This solution works, but takes too long
+# At time of submission
+#   performed 95% faster
+#   used less than 7% memory
+# than other solutions
+# 
+
 
 class Solution:
     def canJump(self, nums):
@@ -16,16 +20,14 @@ class Solution:
             return False
         
         # Where the final jump can be made
-        current_index = next(ind for ind, val in enumerate(max_jump) if val >= last_index) 
+        index = next(ind for ind, val in enumerate(max_jump) if val >= last_index) 
         
-        # Where the penultimate jump can be made
-        previous_index = next(ind for ind, val in enumerate(max_jump) if val >= current_index) 
-        
-        while previous_index < current_index:
-            current_index = previous_index
-            previous_index = next(ind for ind, val in enumerate(max_jump) if val >= current_index) 
+        # Now work backwards
+        for i in range(index - 1, -1, -1):
+            if max_jump[i] >= index:
+                index = i
             
-        if current_index == 0:
+        if index == 0:
             return True
         else:
             return False
