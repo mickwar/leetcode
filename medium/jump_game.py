@@ -8,24 +8,24 @@ class Solution:
         if len(nums) == 1:
             return True
         
-        index = 0
-        jump_path = [0]
-        while nums[0] > 0:
-            # Check if cleared
-            if index + nums[index] >= len(nums) - 1:
-                return True
+        # Get index for largest jump that can be made
+        last_index = len(nums) - 1
+        max_jump = [i + nums[i] for i in range(last_index)]
+        
+        if max(max_jump) < last_index:
+            return False
+        
+        # Where the final jump can be made
+        current_index = next(ind for ind, val in enumerate(max_jump) if val >= last_index) 
+        
+        # Where the penultimate jump can be made
+        previous_index = next(ind for ind, val in enumerate(max_jump) if val >= current_index) 
+        
+        while previous_index < current_index:
+            current_index = previous_index
+            previous_index = next(ind for ind, val in enumerate(max_jump) if val >= current_index) 
             
-            # Do another jump (if possible)
-            if nums[index] > 0:
-                index = index + nums[index]
-                jump_path.append(index)
-            else:
-                # Otherwise, go back a step in jump_path
-                # And decrement the value in nums
-                # (This ensures we look at the largest jump posssible and
-                # work our way down until no more jumps)
-                jump_path.pop()
-                index = jump_path[-1]
-                nums[index] -= 1
-                
-        return False
+        if current_index == 0:
+            return True
+        else:
+            return False
