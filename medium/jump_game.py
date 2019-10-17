@@ -3,7 +3,7 @@
 # This solution works, but takes too long
 
 class Solution:
-    def canJump(self, nums: List[int]) -> bool:
+    def canJump(self, nums):
         
         if len(nums) == 1:
             return True
