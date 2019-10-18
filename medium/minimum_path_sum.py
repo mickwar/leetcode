@@ -7,6 +7,10 @@
 # Thanks to this article for help: https://www.geeksforgeeks.org/min-cost-path-dp-6/
 # Using dynamic programming (DP), allocating memory so we don't do unnecessary
 # computations. There is no recursion, we've optimized it out using DP.
+
+# But, what is that path? Start from the end of the total cost array, and do a
+# greedy search, always picking the branch which is smaller. If there is a tie,
+# it doesn't matter which you choose
 class Solution:
     def minPathSum(self, grid):
         n = len(grid)       # rows
@@ -35,6 +39,17 @@ class Solution:
                 tc[i][j] = grid[i][j] + min(tc[i-1][j],
                                             tc[i][j-1])
         
+        print("")
+        print("Original")
+        for line in grid:
+            print(line)
+
+        print("Minimum")
+        for line in tc:
+            print(line)
+
+        print("")
+
         return tc[n-1][m-1]
 
 
@@ -53,5 +68,21 @@ grid = [
   [1,3,1,0],
   [1,5,1,0],
   [0,0,1,1]
+]
+print(obj.minPathSum(grid))
+
+grid = [
+  [1,3,1,5,0],
+  [1,5,2,0,3],
+  [2,6,1,1,4],
+  [3,0,2,3,1]
+]
+print(obj.minPathSum(grid))
+
+
+grid = [
+  [1,0,0,1],
+  [1,1,1,1],
+  [1,0,0,1]
 ]
 print(obj.minPathSum(grid))
