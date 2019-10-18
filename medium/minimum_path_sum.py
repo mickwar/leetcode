@@ -1,30 +1,44 @@
 # https://leetcode.com/problems/minimum-path-sum/
+# At time of submission
+#   performed 78% faster
+#   used less than 17% memory
+# than other solutions
 
 # Thanks to this article for help: https://www.geeksforgeeks.org/min-cost-path-dp-6/
-# Naive recursion, works but takes too long
-import sys
+# Using dynamic programming (DP), allocating memory so we don't do unnecessary
+# computations. There is no recursion, we've optimized it out using DP.
 class Solution:
     def minPathSum(self, grid):
         n = len(grid)       # rows
         m = len(grid[0])    # columns
-        # Working our way backward, from the end to the start
-        return self.minCostToXY(grid, n - 1, m - 1)
+
+        # We use a total cost array "tc" where tc[i][j] is the total (minimum)
+        # cost to go from [0][0] up until [i][j]. Thus, the last element,
+        # tc[n-1][m-1] is the minimum across all possible paths.
+
+        ### Initialize total cost array
+        # Initial space
+        tc = [[0] * m for _ in range(n)]
+        tc[0][0] = grid[0][0]
+
+        # First column
+        for i in range(1, n):
+            tc[i][0] = tc[i-1][0] + grid[i][0]
+
+        # First row
+        for j in range(1, m):
+            tc[0][j] = tc[0][j-1] + grid[0][j]
+
+        # Fill in the remaining
+        for i in range(1, n):
+            for j in range(1, m):
+                tc[i][j] = grid[i][j] + min(tc[i-1][j],
+                                            tc[i][j-1])
         
-    def minCostToXY(self, grid, x, y):
-        # Return very large value if out of bounds
-        if x < 0 or y < 0:
-            return sys.maxsize
-        elif x == 0 and y == 0:
-            return grid[x][y]
-        else:
-            # We can only go down and right, hence the two branches.
-            # This is where the recursion goes down. It needs to follow each
-            # path until it can come back up and compute the minimums.
-            return grid[x][y] + min(self.minCostToXY(grid, x, y-1),
-                                    self.minCostToXY(grid, x-1, y))
+        return tc[n-1][m-1]
 
 
-
+### Examples
 obj = Solution()
 
 grid = [
